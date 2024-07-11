@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ingress-nginx.yaml
+
+patches:
+# delete stuff we do not want
+- path: delete-validation-webhook-configuration.yaml
+- path: delete-ingress-nginx-admission-create-job.yaml
+- path: delete-ingress-nginx-admission-patch-job.yaml
+- target:
+    kind: Namespace
+  patch: |
+    - op: add
+      path: /metadata/labels
+      value:
+        pod-security.kubernetes.io/enforce: restricted

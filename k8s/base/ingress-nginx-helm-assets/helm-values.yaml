@@ -1,0 +1,33 @@
+controller:
+  name: controller
+  enableAnnotationValidations: false
+  image:
+    registry: registry.k8s.io
+    image: ingress-nginx/controller
+    tag: "v1.11.0"
+  # -- Global configuration passed to the ConfigMap consumed by the controller. Values may contain Helm templates.
+  # Ref.: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
+  config: {}
+  # -- Address to bind the health check endpoint.
+  # It is better to set this option to the internal node address
+  # if the Ingress-Nginx Controller is running in the `hostNetwork: true` mode.
+  replicaCount: 1
+  # -- Minimum available pods set in PodDisruptionBudget.
+  # Define either 'minAvailable' or 'maxUnavailable', never both.
+  minAvailable: 1
+  # -- Maximum unavailable pods set in PodDisruptionBudget. If set, 'minAvailable' is ignored.
+  # maxUnavailable: 1
+
+  # -- Enable mimalloc as a drop-in replacement for malloc.
+  ## ref: https://github.com/microsoft/mimalloc
+  ##
+  enableMimalloc: true
+  ## Override NGINX template
+  # shareProcessNamespace enables process namespace sharing within the pod.
+  # This can be used for example to signal log rotation using `kill -USR1` from a sidecar.
+  shareProcessNamespace: false
+  # -- Additional containers to be added to the controller pod.
+  # See https://github.com/lemonldap-ng-controller/lemonldap-ng-controller as example.
+  admissionWebhooks:
+    enabled: false
+
